@@ -46,30 +46,37 @@ void PrintArray(string[] array)
     }
     Console.WriteLine();
 }
-
-string[] UserEnterV2()
+string[] UserEnterStrings()
 {
-    PrintText("Введите, сколько строк вы введёте: ");
-    int n = UserEnter();
-    string[] array = new string[n];
-    for (int i = 0; i < array.Length; i++)
+    PrintText("Вводите до 30 штук строк. Если больше нечего вводить - нажмите 'Enter'.");
+    NewLine();
+    string[] help = new string[30];//30 - потому что, 1) увы, мы не умеем ещё делать "резиновые" массивы,
+    //2) можно поставить любое число, до которого пользователь не доберется
+    int i = 0;
+    for (; true; i++)
     {
-        PrintText($"Введите {i + 1} строку:");
-        NewLine();
-        array[i] = Convert.ToString(UserEnter());
+        string str = String.Empty;
+        if (i < 30)
+        {
+            PrintText($"Введите {i + 1} строку: ");
+            str = Convert.ToString(UserEnter());
+        }
+        if (str == "exit" || i == 30) break;
+        else help[i] = str;
     }
-    return array;
+    string[] strings = new string [i];
+    for (int j = 0; j < strings.Length; j++)
+    {
+        strings[j] = help[j];
+    }
+    return strings;
 }
-string[] enter = UserEnterV2();
+
+string[] enter = UserEnterStrings();
 string[] exit = new string[enter.Length];
-int j = 0;
 for (int i = 0; i < enter.Length; i++)
 {
-    if (enter[i].Length < 4)
-    {
-        exit[j] = enter[i];
-        j++;
-    }
+    if (enter[i].Length < 4) exit[i] = enter[i];
 }
 
 PrintArray(exit);
